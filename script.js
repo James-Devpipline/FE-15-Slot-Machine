@@ -13,3 +13,59 @@ Project: Slot Machine
 [ $ $ $ ] <-
   * ( *
 */
+
+// first create functionality of slot machine
+// second incorporate promises
+
+function slotMachine() {
+  workingSymbols = "7$¶Z";
+  winningSymbols = ["777", "$$$", "¶¶¶", "¢¢¢"];
+  workingString = ``;
+
+  for (let i = 0; i < 3; i++) {
+    workingString +=
+      workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
+  }
+
+  console.log(workingString);
+
+  switch (workingString) {
+    case "777":
+      console.log(`
+      LUCKY SEVENS
+
+      YOU HAVE WON $10,000
+      `);
+      break;
+
+    case "$$$":
+      console.log(`
+      MAKING BANK
+
+      YOU HAVE WON $1,000
+      `);
+      break;
+
+    case "¢¢¢":
+      console.log(`
+      POCKET CHANGE
+
+      YOU HAVE WON $0.99
+      `);
+      break;
+
+    case "ZZZ":
+      console.log(`
+      SLEEPY JOES
+
+      YOU HAVE WON $100
+      `);
+      break;
+    default:
+      console.log(`
+      Nothing, try again?
+      `);
+  }
+}
+
+console.log(slotMachine());
