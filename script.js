@@ -29,53 +29,60 @@ function gambleLoop() {
     `);
   }
   function gambleQuit() {
-    // console.log(`
-    // You currently have $${gambleFunds} to check out!
+    console.log(`
+    You currently have $${gambleFunds} to cash out!
 
-    // Goodbye!
-    // `);
+    Goodbye!
+    `);
     isGambling = !true;
   }
 
   while (gambleCheck) {
-    let gambleAmount = prompt(`
-      How much would you like to gamble?
-      You currently have $${gambleFunds}
-      Enter none to quit
-      `);
-    if (gambleAmount) {
-      if (parseInt(gambleAmount) > gambleFunds) {
-        console.log(`
-            Inavlid amount.
-            You do not have that much to gamble!
-            `);
-      } else if (parseInt(gambleAmount) < 0) {
-        console.log(`
-            ERROR: Cannot Gamble negative amount!
-            `);
-      } else if (parseInt(gambleAmount) == 0) {
-        gambleCheck = !gambleCheck;
-        gambleQuit();
-      } else if (parseInt(gambleAmount) === gambleFunds) {
-        console.log(`
-          Going all in? You got it boss!
-          `);
-        slotMachine(gambleAmount);
-        gambleCheck = !gambleCheck;
-      } else if (parseInt(gambleAmount) < gambleFunds) {
-        gambleCheck = !gambleCheck;
-        slotMachine(gambleAmount);
-      }
-    } else {
+    if (gambleFunds <= 0) {
+      console.log("You ran out of funds :( \nGoodbye!");
+      alert("You ran out of funds :( \nGoodbye!");
+      isGambling = !isGambling;
       gambleCheck = !gambleCheck;
-      gambleQuit();
+    } else {
+      let gambleAmount = prompt(`
+        How much would you like to gamble?
+        You currently have $${gambleFunds}
+        Press Enter to gamble $20
+        Enter nothing to quit
+        `);
+      if (gambleAmount) {
+        if (parseInt(gambleAmount) === 0) {
+          gambleCheck = !gambleCheck;
+          gambleQuit();
+        } else if (parseInt(gambleAmount) > gambleFunds) {
+          console.log(`
+              Inavlid amount.
+              You do not have that much to gamble!
+              `);
+        } else if (parseInt(gambleAmount) < 0) {
+          console.log(`
+              ERROR: Cannot Gamble negative amount!
+              `);
+        } else if (parseInt(gambleAmount) === gambleFunds) {
+          console.log(`
+            Going all in? You got it boss!
+            `);
+          slotMachine(gambleAmount);
+          gambleCheck = !gambleCheck;
+        } else if (parseInt(gambleAmount) < gambleFunds) {
+          gambleCheck = !gambleCheck;
+          slotMachine(gambleAmount);
+        }
+      } else {
+        gambleCheck = !gambleCheck;
+        slotMachine(20);
+      }
     }
   }
 }
 
 function slotMachine(inputAmount) {
-  workingSymbols = "7$¶Z";
-  winningSymbols = ["777", "$$$", "¶¶¶", "¢¢¢"];
+  workingSymbols = "7$$¢¢¢###¶¶¶";
   workingString = ``;
 
   for (let i = 0; i < 3; i++) {
@@ -87,39 +94,43 @@ function slotMachine(inputAmount) {
 
   switch (workingString) {
     case "777":
+      inputAmount *= 1000;
       console.log(`
         LUCKY SEVENS
 
-        YOU HAVE WON $10,000
+        YOU HAVE WON $${inputAmount}
         `);
-      gambleFunds += 10000;
+      gambleFunds += inputAmount;
       break;
 
     case "$$$":
+      inputAmount *= 100;
       console.log(`
         MAKING BANK
 
-        YOU HAVE WON $1,000
+        YOU HAVE WON $${inputAmount}
         `);
-      gambleFunds += 1000;
+      gambleFunds += inputAmount;
       break;
 
     case "¢¢¢":
+      inputAmount *= 10;
       console.log(`
         POCKET CHANGE
 
-        YOU HAVE WON $1
+        YOU HAVE WON $${inputAmount}
         `);
-      gambleFunds++;
+      gambleFunds += inputAmount;
       break;
 
     case "ZZZ":
+      inputAmount *= 2;
       console.log(`
         SLEEPY JOES
 
-        YOU HAVE WON $100
+        YOU HAVE WON $${inputAmount}
         `);
-      gambleFunds += 100;
+      gambleFunds += inputAmount;
       break;
     default:
       gambleFunds -= inputAmount;
@@ -129,5 +140,4 @@ function slotMachine(inputAmount) {
 
 while (isGambling) {
   gambleLoop();
-  alert(isGambling);
 }
