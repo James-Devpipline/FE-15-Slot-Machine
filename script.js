@@ -20,14 +20,14 @@ Project: Slot Machine
 let gambleFunds = 1000;
 let isGambling = true;
 
-let scores = {
-  Wins: 0,
-  Losses: 0,
-};
-
 function gambleLoop() {
   let gambleCheck = true;
-
+  function gambleMenu() {
+    console.log(`
+    Hello! Welcome to the Slots
+    Your starting amount for gambling funds is at $${gambleFunds}
+    `);
+  }
   function gambleQuit() {
     console.log(`
     You currently have $${gambleFunds} to cash out!
@@ -48,12 +48,11 @@ function gambleLoop() {
       gambleCheck = !gambleCheck;
     } else {
       let gambleAmount = prompt(`
-      How much would you like to gamble?
-      You currently have $${gambleFunds}
-      Press Enter to gamble $20
-      Enter $0 to quit
-      `);
-
+        How much would you like to gamble?
+        You currently have $${gambleFunds}
+        Press Enter to gamble $20
+        Enter nothing to quit
+        `);
       if (gambleAmount) {
         if (parseInt(gambleAmount) === 0) {
           gambleCheck = !gambleCheck;
@@ -85,8 +84,18 @@ function gambleLoop() {
   }
 }
 
-function winnerTypes(winningString) {
-  switch (winningString) {
+function slotMachine(inputAmount) {
+  workingSymbols = "7$$¢¢¢###¶¶¶";
+  workingString = ``;
+
+  for (let i = 0; i < 3; i++) {
+    workingString +=
+      workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
+  }
+
+  console.log(workingString);
+
+  switch (workingString) {
     case "777":
       inputAmount *= 1000;
       console.log(`
@@ -117,7 +126,7 @@ function winnerTypes(winningString) {
       gambleFunds += inputAmount;
       break;
 
-    default:
+    case "ZZZ":
       inputAmount *= 2;
       console.log(`
         SLEEPY JOES
@@ -125,44 +134,11 @@ function winnerTypes(winningString) {
         YOU HAVE WON $${inputAmount}
         `);
       gambleFunds += inputAmount;
-  }
-}
-
-function slotMachine(inputAmount) {
-  const workingSymbols = "7$$¢¢¢#####¶¶¶¶¶ZZZ";
-  const winningStrings = ["777", "$$$", "¢¢¢", "ZZZ"];
-  let workingString = ``;
-
-  // for (let i = 0; i < 3; i++) {
-  //   workingString +=
-  //     workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
-  // }
-
-  workingString = "777";
-  console.log(workingString);
-
-  function slotMachinePromise() {
-    return new Promise((res, reject) => {
-      if (winningStrings.includes(workingString)) {
-        res(winnerTypes(workingString));
-      } else {
-        reject(console.log("Ahh Darn! Better luck next time!"));
-      }
-    });
-  }
-
-  slotMachinePromise()
-    .then(() => {
-      console.log("test");
-      winnerTypes(workingString);
-    })
-    .then(() => {
-      scores.Wins++;
-    })
-    .catch(() => {
+      break;
+    default:
       gambleFunds -= inputAmount;
-      scores.Losses--;
-    });
+      console.log("Ahh Darn! Better luck next time!");
+  }
 }
 
 while (isGambling) {
