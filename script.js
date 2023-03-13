@@ -20,14 +20,9 @@ Project: Slot Machine
 let gambleFunds = 1000;
 let isGambling = true;
 
-function gambleLoop() {
+async function gambleLoop() {
   let gambleCheck = true;
-  function gambleMenu() {
-    console.log(`
-    Hello! Welcome to the Slots
-    Your starting amount for gambling funds is at $${gambleFunds}
-    `);
-  }
+
   function gambleQuit() {
     console.log(`
     You currently have $${gambleFunds} to cash out!
@@ -35,6 +30,81 @@ function gambleLoop() {
     Goodbye!
     `);
     isGambling = !true;
+  }
+
+  async function slotMachine(inputAmount) {
+    const workingSymbols = "7$$¢¢¢###¶¶¶";
+    let workingString = ``;
+    let animatedString = "";
+
+    const animationTiming = (miliseconds) =>
+      new Promise((res) => setTimeout(res, miliseconds));
+
+    function gambleAnimation() {
+      for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 3; i++) {
+          animatedString +=
+            workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
+        }
+        console.log(animatedString);
+        animatedString = "";
+        animationTiming(500);
+        console.clear();
+      }
+    }
+
+    await gambleAnimation();
+
+    for (let i = 0; i < 3; i++) {
+      workingString +=
+        workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
+    }
+    console.log(workingString);
+
+    switch (workingString) {
+      case "777":
+        inputAmount *= 1000;
+        console.log(`
+          LUCKY SEVENS
+  
+          YOU HAVE WON $${inputAmount}
+          `);
+        gambleFunds += inputAmount;
+        break;
+
+      case "$$$":
+        inputAmount *= 100;
+        console.log(`
+          MAKING BANK
+  
+          YOU HAVE WON $${inputAmount}
+          `);
+        gambleFunds += inputAmount;
+        break;
+
+      case "¢¢¢":
+        inputAmount *= 10;
+        console.log(`
+          POCKET CHANGE
+  
+          YOU HAVE WON $${inputAmount}
+          `);
+        gambleFunds += inputAmount;
+        break;
+
+      case "ZZZ":
+        inputAmount *= 2;
+        console.log(`
+          SLEEPY JOES
+  
+          YOU HAVE WON $${inputAmount}
+          `);
+        gambleFunds += inputAmount;
+        break;
+      default:
+        gambleFunds -= inputAmount;
+        console.log("Ahh Darn! Better luck next time!");
+    }
   }
 
   while (gambleCheck) {
@@ -45,11 +115,12 @@ function gambleLoop() {
       gambleCheck = !gambleCheck;
     } else {
       let gambleAmount = prompt(`
-        How much would you like to gamble?
-        You currently have $${gambleFunds}
-        Press Enter to gamble $20
-        Enter nothing to quit
-        `);
+      How much would you like to gamble?
+      You currently have $${gambleFunds}
+      Press Enter to gamble $20
+      Enter $0 to quit
+      `);
+
       if (gambleAmount) {
         if (parseInt(gambleAmount) === 0) {
           gambleCheck = !gambleCheck;
@@ -78,63 +149,6 @@ function gambleLoop() {
         slotMachine(20);
       }
     }
-  }
-}
-
-function slotMachine(inputAmount) {
-  workingSymbols = "7$$¢¢¢###¶¶¶";
-  workingString = ``;
-
-  for (let i = 0; i < 3; i++) {
-    workingString +=
-      workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
-  }
-
-  console.log(workingString);
-
-  switch (workingString) {
-    case "777":
-      inputAmount *= 1000;
-      console.log(`
-        LUCKY SEVENS
-
-        YOU HAVE WON $${inputAmount}
-        `);
-      gambleFunds += inputAmount;
-      break;
-
-    case "$$$":
-      inputAmount *= 100;
-      console.log(`
-        MAKING BANK
-
-        YOU HAVE WON $${inputAmount}
-        `);
-      gambleFunds += inputAmount;
-      break;
-
-    case "¢¢¢":
-      inputAmount *= 10;
-      console.log(`
-        POCKET CHANGE
-
-        YOU HAVE WON $${inputAmount}
-        `);
-      gambleFunds += inputAmount;
-      break;
-
-    case "ZZZ":
-      inputAmount *= 2;
-      console.log(`
-        SLEEPY JOES
-
-        YOU HAVE WON $${inputAmount}
-        `);
-      gambleFunds += inputAmount;
-      break;
-    default:
-      gambleFunds -= inputAmount;
-      console.log("Ahh Darn! Better luck next time!");
   }
 }
 
