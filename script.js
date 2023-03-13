@@ -137,6 +137,7 @@ function slotMachine(inputAmount) {
   //   workingString +=
   //     workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
   // }
+
   workingString = "777";
   console.log(workingString);
 
