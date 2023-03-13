@@ -82,7 +82,9 @@ function gambleLoop() {
 function winnerTypes(winningString) {
   switch (winningString) {
     case "777":
-      inputAmount *= 1000;
+      console.log("this doesnt work");
+      // inputAmount *= 1000;
+      console.log("After setting amount: ", inputAmount);
       console.log(`
         LUCKY SEVENS
         YOU HAVE WON $${inputAmount}
@@ -118,7 +120,7 @@ function winnerTypes(winningString) {
   }
 }
 
-function slotMachine(inputAmount) {
+async function slotMachine(inputAmount) {
   const workingSymbols = "7$$¢¢¢#####¶¶¶¶¶ZZZ";
   const winningStrings = ["777", "$$$", "¢¢¢", "ZZZ"];
   let workingString = ``;
@@ -130,28 +132,28 @@ function slotMachine(inputAmount) {
   workingString = "777";
   console.log(workingString);
 
-  function slotMachinePromise() {
+  async function slotMachinePromise() {
     return new Promise((res, reject) => {
       if (winningStrings.includes(workingString)) {
         res(winnerTypes(workingString));
       } else {
-        reject(console.log("Ahh Darn! Better luck next time!"));
+        reject("Ahh Darn! Better luck next time!");
       }
     });
   }
 
-  slotMachinePromise()
-    .then(() => {
-      console.log("test");
-      winnerTypes(workingString);
-    })
-    .then(() => {
-      scores.Wins++;
-    })
-    .catch(() => {
-      gambleFunds -= inputAmount;
-      scores.Losses--;
-    });
+  await slotMachinePromise();
+  // .then(() => {
+  //   console.log("test");
+  //   // winnerTypes(workingString);
+  // })
+  // .then(() => {
+  //   scores.Wins++;
+  // })
+  // .catch(() => {
+  //   gambleFunds -= inputAmount;
+  //   scores.Losses--;
+  // });
 }
 
 while (isGambling) {
