@@ -16,7 +16,6 @@ Project: Slot Machine
 // second incorporate promises
 let gambleFunds = 1000;
 let isGambling = true;
-
 function gambleLoop() {
   let gambleCheck = true;
   function gambleMenu() {
@@ -85,7 +84,6 @@ function slotMachine(inputAmount) {
     workingString +=
       workingSymbols[Math.floor(Math.random() * workingSymbols.length)];
   }
-
   console.log(workingString);
 
   switch (workingString) {
